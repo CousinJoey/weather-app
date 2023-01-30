@@ -22,6 +22,8 @@ export async function getData(city) {
         description,
     );
 
+    weatherStorage.weatherArray = [];
+
     weatherStorage.weatherArray.push(weather);
 
     console.log(weatherStorage.weatherArray);
@@ -35,21 +37,28 @@ async function getForecast(lat, lon) {
 
     let forecastDataArray = forecastData.list;
 
+    forecastStorage.forecastArray = [];
+
     for (let i = 0; i < forecastDataArray.length; i += 8) {
         let date = forecastDataArray[i].dt_txt;
+        let location = forecastData.city.name
         let forecastTemp = processTemp(forecastDataArray[i].main.temp);
         let forecastDescription = forecastDataArray[i].weather[0].description;
 
         const forecast = new Forecast (
             date,
+            location,
             forecastTemp.tempCels,
             forecastTemp.tempFar,
             forecastDescription
         )
 
+
         forecastStorage.forecastArray.push(forecast);
 
     }
+
+    console.log(forecastStorage.forecastArray);
 
 }
 
@@ -105,8 +114,9 @@ export const weatherStorage = (() => {
 
 
 class Forecast {
-    constructor(date, forecastTempCels, forecastTempFar, forecastDescription) {
+    constructor(date, location, forecastTempCels, forecastTempFar, forecastDescription) {
         this.date = date,
+        this.location = location,
         this.forecastTempCels = forecastTempCels,
         this.forecastTempFar = forecastTempFar,
         this.forecastDescription = forecastDescription

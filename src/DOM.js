@@ -6,13 +6,22 @@ function listeners() {
 
         if (e.target.matches(".btn-submit")) {
             getData(document.getElementById("inputSearch").value);
-            console.log(weatherStorage.weatherArray);
-            console.log(forecastStorage.forecastArray);
+            renderUI();
         }
 
     });
 
 
 }
+
+function renderUI() {
+
+
+    // let todayWeather = document.querySelector(".today-weather")
+
+
+
+}
+
 
 export default listeners

@@ -1,3 +1,38 @@
-p {
-    color: red;
+body {
+    display: grid;
+    grid-template-rows: 1fr 8fr;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    grid-row: 1/1;
+    background-color: bisque;
+}
+
+main {
+    grid-row: 2/2;
+    background-color: aqua;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 4em;
+}
+
+.forecast {
+    display: flex;
+    width: 80vw;
+    justify-content: space-between;
+    align-items: center;
 }
