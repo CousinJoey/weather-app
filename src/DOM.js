@@ -4,10 +4,18 @@ export function listeners() {
 
     document.addEventListener("click", (e) => {
 
-        if (e.target.matches(".btn-submit")) {
+        if (e.target.matches("#btn-submit")) {
+
+            e.preventDefault();
+
+            let todayWeather = document.getElementById("today-weather");
+            let forecast = document.getElementById("forecast");
+
+            todayWeather.textContent = "Loading..."
+            forecast.textContent = "";
+
+
             getData(document.getElementById("inputSearch").value);
-            let check = document.getElementById("checkbox-input").checked;
-            console.log(check);
         }
 
         if (e.target.matches("#checkbox-input")) {
@@ -16,8 +24,12 @@ export function listeners() {
         }
 
     });
+}
 
+window.addEventListener("keydown", keyboardFunc)
 
+function keyboardFunc(e) {
+   if (e.key === "Enter") document.getElementById("btn-submit").click();
 }
 
 export function renderToday() {
@@ -33,29 +45,30 @@ export function renderToday() {
 
     let imageContainer = document.createElement("div")
 
-    let icon = document.createElement("i");
-    icon.classList.add("fa-solid");
-    icon.classList.add("fa-cloud");
+    let icon = document.createElement("img");
+    icon.classList.add("weather-icon");
+    icon.src = `http://openweathermap.org/img/wn/${weatherStorage.weatherArray[0].weatherIcon}@2x.png`
 
     imageContainer.appendChild(icon);
-
-    let textContainer = document.createElement("div");
 
     let text = document.createElement("p");
     text.textContent = `${weatherStorage.weatherArray[0].description}`
 
-    textContainer.appendChild(text);
-
     iconContainer.appendChild(imageContainer);
-    iconContainer.appendChild(textContainer);
     
-
     let locationContainer = document.createElement("div");
+    locationContainer.classList.add("location-container");
 
     let location = document.createElement("p");
-    location.textContent = `${weatherStorage.weatherArray[0].location}`;
+    location.textContent = `${weatherStorage.weatherArray[0].location},`;
 
     let extraDataContainer = document.createElement("div");
+    extraDataContainer.classList.add("extra-data-container");
+
+    extraDataContainer.appendChild(text);
+
+
+    let tempContainer = document.createElement("div");
 
 
     if (unitCheck === true) {
@@ -63,10 +76,10 @@ export function renderToday() {
         feelsLikeCels.textContent = `Feels Like: ${weatherStorage.weatherArray[0].feelsLikeCels} °C`;
 
         let tempCels = document.createElement("p");
-        tempCels.textContent = `Tempature: ${weatherStorage.weatherArray[0].tempCels} °C`;
+        tempCels.textContent = `${weatherStorage.weatherArray[0].tempCels} °C`;
 
         extraDataContainer.appendChild(feelsLikeCels);
-        extraDataContainer.appendChild(tempCels);
+        tempContainer.appendChild(tempCels);
 
     } else if (unitCheck === false) {
 
@@ -74,14 +87,15 @@ export function renderToday() {
         feelsLikeFar.textContent = `Feels Like: ${weatherStorage.weatherArray[0].feelsLikeFar} °F`
 
         let tempFar = document.createElement("p");
-        tempFar.textContent = `Tempature: ${weatherStorage.weatherArray[0].tempFar} °F`;
+        tempFar.textContent = `${weatherStorage.weatherArray[0].tempFar} °F`;
 
         extraDataContainer.appendChild(feelsLikeFar);
-        extraDataContainer.appendChild(tempFar);
+        tempContainer.appendChild(tempFar);
 
     }
 
     locationContainer.appendChild(location);
+    locationContainer.appendChild(tempContainer);
 
     todayWeather.appendChild(locationContainer);
     todayWeather.appendChild(iconContainer);
@@ -107,24 +121,17 @@ export function renderForecast() {
 
         let imageContainer = document.createElement("div")
 
-        let icon = document.createElement("i");
-        icon.classList.add("fa-solid");
-        icon.classList.add("fa-cloud");
-
-        let textContainer = document.createElement("div");
-
-        let text = document.createElement("p");
-        text.textContent = `${forecastStorage.forecastArray[i].forecastDescription}`
-
-        textContainer.appendChild(text);
+        let icon = document.createElement("img");
+        icon.classList.add("forecast-icon");
+        icon.src = `http://openweathermap.org/img/wn/${forecastStorage.forecastArray[i].forecastIcon}@2x.png`
 
         iconContainer.appendChild(imageContainer);
-        iconContainer.appendChild(textContainer);
 
         let dateContainer = document.createElement("div");
+        dateContainer.classList.add("date-container");
 
         let date = document.createElement("p");
-        date.textContent = `${forecastStorage.forecastArray[i].date}`
+        date.textContent = `${forecastStorage.forecastArray[i].date},`
 
         dateContainer.appendChild(date);
 
@@ -143,18 +150,19 @@ export function renderForecast() {
         }
 
 
-
+        dateContainer.appendChild(extraDataContainer);
         forecastItem.appendChild(dateContainer);
         forecastItem.appendChild(iconContainer);
-        forecastItem.appendChild(extraDataContainer);
 
         forecast.appendChild(forecastItem);
 
 
     }
+}
 
-
-
+export function errorMessage() {
+    let todayWeather = document.getElementById("today-weather");
+    todayWeather.textContent = "City not found. Please double check spacing and spelling or try a new city name."
 }
 
 /*

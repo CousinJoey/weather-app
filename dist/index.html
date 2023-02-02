@@ -15,9 +15,9 @@
             <div class="title">Weather App</div>
         </div>
         <div class="form-container">
-            <form class="form" id="searchForm" novalidate>
+            <form class="form" id="searchForm" novalidate onsubmit="event.preventDefault();">
                 <input class="input" id="inputSearch" type="text" placeholder="Enter City Name">
-                <button class="btn-submit" type="button">Search</button>
+                <button id="btn-submit" type="button">Search</button>
             </form>
         </div>
         <div class="container">
@@ -30,9 +30,7 @@
     <main>
         <div class="main-container">
             <div class="today-weather-container">
-                <div id="today-weather">
-                    <p></p>
-                </div>
+                <div id="today-weather">Input any city's name to begin.</div>
             </div>
             <div class="forecast-container">
                 <div id="forecast">
